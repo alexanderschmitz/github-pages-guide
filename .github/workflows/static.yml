@@ -53,6 +53,19 @@ jobs:
         run: |
           coverage run -m pytest
           coverage html -d ./htmlcov/projectname_${GITHUB_REF##*/} --title=${{steps.commit.outputs.short}}
+      - name: Generate index page
+        run: |
+          cat > ./htmlcov/index.html <<EOL
+          <!doctype html>
+          <html>
+            <head>
+              <title>GitHub Pages deployed!</title>
+            </head>
+            <body>
+              <p>GitHub Pages with <strong>${{ github.sha }}</strong> commit ID has been deployed through <a href="https://github.com/marketplace/actions/github-pages">GitHub Pages action</a> successfully.</p>
+            </body>
+          </html>
+          EOL
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
