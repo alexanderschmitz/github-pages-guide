@@ -57,6 +57,7 @@ jobs:
           coverage html -d ./htmlcov/projectname_${GITHUB_REF##*/} --title=${{steps.commit.outputs.short}}
       - name: Generate index page
         run: |
+          git branch -l 
           cat > ./htmlcov/index.html <<EOL
           <!doctype html>
           <html>
