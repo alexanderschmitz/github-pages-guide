@@ -54,28 +54,18 @@ jobs:
         # ${GITHUB_REF##*/} returns the branch name
         run: |
           coverage run -m pytest
-          coverage html -d ./htmlcov/projectname_${GITHUB_REF##*/} --title=${{steps.commit.outputs.short}}
-      - name: Generate index page
+          coverage html -d ./html_report/projectname_${GITHUB_REF##*/} --title=${{steps.commit.outputs.short}}
+      - name: Get remote branches
+        # TODO: run only on PR open or close
         run: |
-          git branch -l 
-          cat > ./htmlcov/index.html <<EOL
-          <!doctype html>
-          <html>
-            <head>
-              <title>GitHub Pages deployed!</title>
-            </head>
-            <body>
-              <p>GitHub Pages with <strong>${{ github.sha }}</strong> commit ID has been deployed through <a href="https://github.com/marketplace/actions/github-pages">GitHub Pages action</a> successfully.</p>
-            </body>
-          </html>
-          EOL
+          source html_report/list_branches.sh
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload entire repository
-          path: './htmlcov/'
+          path: './html_report/'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
