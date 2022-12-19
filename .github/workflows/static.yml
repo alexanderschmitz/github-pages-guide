@@ -51,12 +51,11 @@ jobs:
         uses: pr-mpt/actions-commit-hash@v2
         id: commit
       - name: Test with pytest
-        # ${GITHUB_REF##*/} returns the branch name
+        # ${GITHUB_REF##*/} returns the current branch name
         run: |
           coverage run -m pytest
           coverage html -d ./html_report/projectname_${GITHUB_REF##*/} --title=${{steps.commit.outputs.short}}
       - name: Get remote branches
-        # TODO: run only on PR open or close
         run: |
           source html_report/list_branches.sh
       - name: Setup Pages
