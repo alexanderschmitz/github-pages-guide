@@ -1,11 +1,14 @@
 
-const LINK_PREFIX = "projectname_"
+const LINK_PREFIX = "https://alexanderschmitz.github.io/github-pages-guide/projectname_"
 function makeUL(array) {
     var list = document.createElement('ul');
 
     for (var i = 0; i < array.length; i++) {
         var item = document.createElement('li');
-        item.appendChild(document.createTextNode(LINK_PREFIX.concat(array[i])));
+        var link = document.createElement('a');
+        link.text = array[i];
+        link.href = LINK_PREFIX.concat(array[i])
+        item.appendChild(link);
         list.appendChild(item);
     }
 
@@ -13,8 +16,8 @@ function makeUL(array) {
     return list;
 }
 
-function createBranchList() {
-    fetch('branches.txt')
+function createBranchList(fileName) {
+    fetch(fileName)
     .then(response => response.text())
     .then(text => text.split("\n"))
     .then(array => array.filter(n => n))
@@ -27,5 +30,5 @@ function createBranchList() {
 }
 
 document.addEventListener("DOMContentLoaded", function (event) {
-    createBranchList();
+    createBranchList("./branches.txt");
 })
