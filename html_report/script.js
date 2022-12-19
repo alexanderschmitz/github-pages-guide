@@ -13,7 +13,7 @@ function makeUL(array) {
     return list;
 }
 
-document.addEventListener("DOMContentLoaded", function (event) {
+function createBranchList() {
     fetch('branches.txt')
     .then(response => response.text())
     .then(text => text.split("\n"))
@@ -23,4 +23,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
         return array;
     })
     .then(array => document.getElementById('foo').appendChild(makeUL(array)));
+
+}
+
+document.addEventListener("DOMContentLoaded", function (event) {
+    createBranchList();
 })
