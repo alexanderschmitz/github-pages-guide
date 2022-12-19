@@ -2,8 +2,8 @@
 
 # https://man7.org/linux/man-pages/man1/git-for-each-ref.1.html
 rm branches.txt -f
-git branch --format='%(refname:lstrip=3)' -r >> branches.txt
-FILE=branches.txt
+git branch --format='%(refname:lstrip=3)' -r >> html_report/branches.txt
+FILE=html_report/branches.txt
 if test -f "$FILE"; then
   echo "$FILE exists."
 else
