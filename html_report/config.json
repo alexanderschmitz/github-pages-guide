@@ -1,4 +1,5 @@
 {
+  "branches": "./branches.txt",
   "root": "https://alexanderschmitz.github.io/github-pages-guide/",
   "prefix": "projectname_"
 }

@@ -1,11 +1,11 @@
-function makeUL(branches, root, prefix) {
+function makeUL(branches, config) {
     let list = document.createElement('ul');
 
     for (let i = 0; i < branches.length; i++) {
         let item = document.createElement('li');
         let link = document.createElement('a');
         link.text = branches[i];
-        link.href = root.concat(prefix.concat(branches[i]));
+        link.href = config.root.concat(config.prefix.concat(branches[i]));
         item.appendChild(link);
         list.appendChild(item);
     }
@@ -14,8 +14,8 @@ function makeUL(branches, root, prefix) {
 }
 
 
-function getBranchList(fileName) {
-    return fetch(fileName)
+function createBranchList(config) {
+    return fetch(config.branches)
         .then(response => response.text())
         .then(text => text.split("\n"))
         .then(array => array.filter(n => n));
@@ -27,9 +27,9 @@ function readJSON(fileName) {
         .then(response => response.json());
 }
 
-document.addEventListener("DOMContentLoaded", function (event) {
-    let config = readJSON("./config.json");
-    let branches = getBranchList("./branches.txt");
-    let list = makeUL(branches, config.root, config.prefix);
-    document.getElementById('branch-list').appendChild(list);
+document.addEventListener("DOMContentLoaded", async function (event) {
+    const config = await readJSON("./config.json");
+    createBranchList(config)
+        .then(branches => makeUL(branches, config))
+        .then(list => document.getElementById('branch-list').appendChild(list));
 })
