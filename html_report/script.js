@@ -1,14 +1,11 @@
-const LINK_PREFIX = "https://alexanderschmitz.github.io/github-pages-guide/projectname_"
-
-
-function makeUL(array) {
+function makeUL(branches, root, prefix) {
     let list = document.createElement('ul');
 
-    for (let i = 0; i < array.length; i++) {
+    for (let i = 0; i < branches.length; i++) {
         let item = document.createElement('li');
         let link = document.createElement('a');
-        link.text = array[i];
-        link.href = LINK_PREFIX.concat(array[i])
+        link.text = branches[i];
+        link.href = root.concat(prefix.concat(branches[i]));
         item.appendChild(link);
         list.appendChild(item);
     }
@@ -16,18 +13,23 @@ function makeUL(array) {
     return list;
 }
 
-function createBranchList(fileName) {
-    fetch(fileName)
-    .then(response => response.text())
-    .then(text => text.split("\n"))
-    .then(array => array.filter(n => n))
-    .then(array => {
-        console.log(array);
-        return array;
-    })
-    .then(array => document.getElementById('foo').appendChild(makeUL(array)));
+
+function getBranchList(fileName) {
+    return fetch(fileName)
+        .then(response => response.text())
+        .then(text => text.split("\n"))
+        .then(array => array.filter(n => n));
+}
+
+
+function readJSON(fileName) {
+    return fetch(fileName)
+        .then(response => response.json());
 }
 
 document.addEventListener("DOMContentLoaded", function (event) {
-    createBranchList("./branches.txt");
+    let config = readJSON("./config.json");
+    let branches = getBranchList("./branches.txt");
+    let list = makeUL(branches, config.root, config.prefix);
+    document.getElementById('branch-list').appendChild(list);
 })
